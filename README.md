@@ -37,7 +37,6 @@ Unit‑файл сервиса:
 sudo cat > /etc/systemd/system/watchlog.service <<EOF
 [Unit]
 Description=My watchlog service
-
 [Service]
 Type=oneshot
 EnvironmentFile=/etc/default/watchlog
@@ -47,11 +46,9 @@ Unit‑файл таймера:
 sudo cat > /etc/systemd/system/watchlog.timer <<EOF
 [Unit]
 Description=Run watchlog script every 30 seconds
-
 [Timer]
 OnUnitActiveSec=30
 Unit=watchlog.service
-
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -77,7 +74,6 @@ sudo cat > /etc/systemd/system/spawn-fcgi.service <<EOF
 [Unit]
 Description=PHP FastCGI Process Manager (spawn-fcgi)
 After=network.target
-
 [Service]
 Type=forking
 PIDFile=/var/run/php-cgi.pid
@@ -85,7 +81,6 @@ EnvironmentFile=/etc/default/phpfastcgi
 ExecStart=/usr/bin/spawn-fcgi -a \${SERVER_IP} -p \${SERVER_PORT} -u \${SERVER_USER} -g \${SERVER_GROUP} -P \${PIDFILE} -C \${SERVER_CHILDS} -f \${PHP_CGI}
 ExecStop=/bin/kill -QUIT \$MAINPID
 PrivateTmp=true
-
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -102,7 +97,6 @@ sudo cat > /etc/systemd/system/nginx@.service <<'EOF'
 Description=A high performance web server (instance %I)
 Documentation=man:nginx(8)
 After=network.target nss-lookup.target
-
 [Service]
 Type=forking
 PIDFile=/run/nginx-%I.pid
@@ -112,7 +106,6 @@ ExecReload=/usr/sbin/nginx -c /etc/nginx/nginx-%I.conf -g 'daemon on; master_pro
 ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx-%I.pid
 TimeoutStopSec=5
 KillMode=mixed
-
 [Install]
 WantedBy=multi-user.target
 EOF
